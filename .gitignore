@@ -23,7 +23,7 @@ media
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
+.idea/**/sqlDataSources.xmle
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
