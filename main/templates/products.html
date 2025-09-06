@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ app_name }} - Products</title>
+</head>
+<body>
+<h1>{{ app_name }}</h1>
+<a href="{% url 'home' %}">Home</a>
+<ul>
+{% for p in products %}
+<li>
+<img src="{{ p.thumbnail }}" alt="{{ p.name }}" width="100">
+<strong>{{ p.name }}</strong> — Rp {{ p.price }} — {{ p.category }}
+</li>
+{% empty %}
+<li>Tidak ada produk.</li>
+{% endfor %}
+</ul>
+</body>
+</html>
