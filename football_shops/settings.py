@@ -35,7 +35,7 @@ DEBUG = not PRODUCTION
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "tirta-rendy-footballshop.pbp.cs.ui.ac.id"
+    "tirta-rendy-footballshops.pbp.cs.ui.ac.id"
 ]
 
 
