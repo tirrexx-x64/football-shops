@@ -6,23 +6,32 @@
   <title>{{ app_name }} - Home</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 font-sans">
-  <!-- Header -->
-  <header class="bg-gray-900 text-white py-6 text-center shadow-md">
-    <h1 class="text-3xl font-bold">{{ app_name }}</h1>
-    <p class="mt-2 text-gray-300">{{ student_name }} — {{ student_class }}</p>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Hero / Header -->
+  <header class="relative bg-gradient-to-r from-blue-800 to-blue-600 text-white">
+    <div class="absolute inset-0">
+      <img src="https://images.unsplash.com/photo-1606851091443-d0d08d34b93a?q=80&w=1200&auto=format&fit=crop"
+           alt="Football background"
+           class="w-full h-full object-cover opacity-30">
+    </div>
+    <div class="relative z-10 text-center py-20 px-6">
+      <h1 class="text-4xl md:text-5xl font-extrabold drop-shadow">{{ app_name }}</h1>
+      <p class="mt-3 text-lg md:text-xl">{{ student_name }} — {{ student_class }}</p>
+    </div>
   </header>
 
-  <!-- Container -->
-  <div class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
-    <h2 class="text-2xl font-semibold mb-6 text-gray-800 border-b pb-2">Featured Products</h2>
+  <!-- Main Container -->
+  <main class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-xl">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">⚽ Featured Products</h2>
 
     <!-- Products Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {% if featured_products %}
         {% for p in featured_products %}
-          <div class="bg-white border rounded-xl shadow-sm hover:shadow-lg transition duration-300">
-            <img src="{{ p.thumbnail }}" alt="{{ p.name }}" class="w-full h-40 object-cover rounded-t-xl">
+          <div class="bg-white border rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transform transition duration-300">
+            <img src="{{ p.thumbnail }}" alt="{{ p.name }}"
+                 class="w-full h-40 object-cover rounded-t-xl">
             <div class="p-4">
               <h3 class="text-lg font-semibold text-gray-800">{{ p.name }}</h3>
               <p class="text-green-600 font-bold mt-1">Rp {{ p.price }}</p>
@@ -33,17 +42,25 @@
           </div>
         {% endfor %}
       {% else %}
-        <p class="col-span-full text-center text-gray-500 italic">Tidak ada produk unggulan saat ini.</p>
+        <p class="col-span-full text-center text-gray-500 italic">
+          Tidak ada produk unggulan saat ini.
+        </p>
       {% endif %}
     </div>
 
-    <!-- Link -->
+    <!-- Link to All Products -->
     <div class="text-center mt-8">
-      <a href="{% url 'product_list' %}" 
-         class="inline-block bg-blue-600 text-white px-6 py-2 rounded-full shadow hover:bg-blue-700 transition">
-        Lihat semua produk
+      <a href="{% url 'product_list' %}"
+         class="bg-blue-600 text-white px-6 py-3 rounded-full font-medium shadow hover:bg-blue-700 transition">
+        Lihat Semua Produk →
       </a>
     </div>
-  </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-12 py-6 text-center bg-gray-900 text-gray-300">
+    <p>&copy; {{ app_name }} — Built with Django & Tailwind</p>
+  </footer>
+
 </body>
 </html>
