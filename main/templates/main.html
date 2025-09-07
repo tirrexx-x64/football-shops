@@ -101,7 +101,7 @@
         {% endfor %}
       {% else %}
         <p class="col-span-full text-center text-gray-500 italic">
-          Tidak ada produk unggulan saat ini yaa ges.
+          Tidak ada produk unggulan saat ini.
         </p>
       {% endif %}
     </div>
@@ -110,7 +110,7 @@
     <div class="text-center mt-8">
       <a href="{% url 'product_list' %}"
          class="relative inline-block bg-gradient-to-r from-green-500 to-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:shadow-2xl hover:scale-110 transform transition-all duration-300 ease-in-out before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-blue-700 before:opacity-0 before:rounded-lg before:transition-opacity before:duration-300 hover:before:opacity-100 overflow-hidden">
-        <span class="relative z-10">🛍️ Lihat Semua Produk yukkk </span>
+        <span class="relative z-10">🛍️ Lihat Semua Produk</span>
       </a>
     </div>
   </main>
@@ -120,24 +120,32 @@
     <p>&copy; {{ app_name }} — Built with Django and Tailwind by Tirta Rendy Siahaan</p>
   </footer>
 
-  <!-- Loading Overlay -->
-  <div id="loadingOverlay" class="loading-overlay">
-    <div class="loading-content">
-      <div class="loading-spinner animate-spin"></div>
-      <h3 class="text-xl font-semibold mb-2 animate-pulse">Loading...</h3>
-      <p class="text-gray-300">Memuat halaman produk</p>
+  <!-- Page Transition -->
+  <div id="pageTransition" class="page-transition">
+    <div class="text-center">
+      <div class="mb-4">⚽</div>
+      <div>Loading Products...</div>
     </div>
   </div>
 
   <script>
     document.getElementById('productBtn').addEventListener('click', function(e) {
-      // Tampilkan loading overlay
-      document.getElementById('loadingOverlay').classList.add('active');
+      e.preventDefault(); // Mencegah navigasi langsung
       
-      // Simulasi loading time (bisa dihapus di production)
-      // setTimeout(() => {
-      //   window.location.href = this.href;
-      // }, 1500);
+      const targetUrl = this.href;
+      const body = document.body;
+      const transition = document.getElementById('pageTransition');
+      
+      // Fade out halaman saat ini
+      body.classList.add('page-fade-out');
+      
+      // Slide in transition
+      transition.classList.add('slide-in');
+      
+      setTimeout(() => {
+        // Setelah 0.8 detik, redirect ke halaman baru
+        window.location.href = targetUrl;
+      }, 800);
     });
   </script>
 
