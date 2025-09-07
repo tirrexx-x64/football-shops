@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv(
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 
 # Debug mode → otomatis off kalau PRODUCTION=True
-DEBUG = not PRODUCTION
+DEBUG = FALSE
 
 # Hosts yang diizinkan
 ALLOWED_HOSTS = [
