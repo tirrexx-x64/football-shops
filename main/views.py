@@ -3,10 +3,10 @@ from .models import Product
 
 
 def home(request):
-    # Ganti dengan nama aplikasi dan data diri kamu
+    
     app_name = "Football Shop"
-    student_name = "Tirta Rendy Siahaan"   # <-- ganti
-    student_class = "PBP C" # <-- ganti
+    student_name = "Tirta Rendy Siahaan"   
+    student_class = "PBP C" 
 
     featured_products = Product.objects.filter(is_featured=True)[:4]
 

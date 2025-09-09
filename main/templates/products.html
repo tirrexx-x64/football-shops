@@ -60,7 +60,7 @@
     </div>
     <div class="relative z-10 text-center">
       <h1 class="text-3xl md:text-4xl font-extrabold drop-shadow animate-fadeInUp">{{ app_name }}</h1>
-      <p class="mt-2 text-lg opacity-90">⚽ All Products</p>
+      <p class="mt-2 text-lg opacity-90">Semua produk yang tersedia/p>
     </div>
   </header>
 
@@ -100,7 +100,7 @@
     <p>&copy; {{ app_name }} — Built with Django and Tailwind by Tirta Rendy Siahaan dengan hati yang tulus eaa</p>
   </footer>
 
-  <!-- Page Transition untuk back button -->
+  <!-- Ngetes page transition buat back button, kayaknya sih ga berfungsi  -->
   <div id="pageTransition" class="page-transition">
     <div class="text-center">
       <div class="mb-4">🏠</div>
@@ -109,7 +109,7 @@
   </div>
 
   <script>
-    // Smooth transition untuk back button
+    //ini buat transisi antar page
     document.getElementById('backBtn').addEventListener('click', function(e) {
       e.preventDefault();
       const targetUrl = this.href;

@@ -1,5 +1,5 @@
 
-
+#ini masih file test yang di tutorial, nnti diganti
 # Create your tests here.
 from django.test import TestCase, Client
 from .models import News

@@ -144,11 +144,11 @@
       {% endif %}
     </div>
 
-    <!-- Link to All Products -->
+    <!-- Buat lihat semua produk -->
     <div class="text-center mt-8">
       <a href="{% url 'product_list' %}" id="productBtn"
          class="relative inline-block bg-gradient-to-r from-green-500 to-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:shadow-2xl hover:scale-110 transform transition-all duration-300 ease-in-out before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-blue-700 before:opacity-0 before:rounded-lg before:transition-opacity before:duration-300 hover:before:opacity-100 overflow-hidden">
-        <span class="relative z-10">🛍️ Lihat Semua Produk</span>
+        <span class="relative z-10"> Lihat Semua Produk</span>
       </a>
     </div>
   </main>
@@ -158,30 +158,30 @@
     <p>&copy; {{ app_name }} — Built with Django, Tailwind, and CSS by Tirta Rendy Siahaan dengan hati yang tulus eaa</p>
   </footer>
 
-  <!-- Page Transition -->
+<!-- Ngetes page transition buat back button, kayaknya sih ga berfungsi , nnti akan diimprove -->
   <div id="pageTransition" class="page-transition">
     <div class="text-center">
       <div class="mb-4">⚽</div>
       <div>Loading Products...</div>
     </div>
   </div>
-
+<!--ini buat transisi antar page-->
   <script>
     document.getElementById('productBtn').addEventListener('click', function(e) {
-      e.preventDefault(); // Mencegah navigasi langsung
+      e.preventDefault(); 
       
       const targetUrl = this.href;
       const body = document.body;
       const transition = document.getElementById('pageTransition');
       
-      // Fade out halaman saat ini
+      
       body.classList.add('page-fade-out');
       
-      // Slide in transition
+    
       transition.classList.add('slide-in');
       
       setTimeout(() => {
-        // Setelah 0.8 detik, redirect ke halaman baru
+        
         window.location.href = targetUrl;
       }, 800);
     });
