@@ -27,7 +27,13 @@ Terakhir, saya membuat file README.md di root proyek. File ini saya isi dengan t
 
 
 2. Untuk link terhadap bagan yang telah saya buat adalah sebagai berikut :
-- https://drive.google.com/file/d/1NtpBEqFnlqdaq7XoJNha234NOnerAvcy/view?usp=drivesdk
+https://drive.google.com/file/d/1NtpBEqFnlqdaq7XoJNha234NOnerAvcy/view?usp=drivesdk
+
+Bagan tersebut menjelaskan alur kerja Django dalam menangani sebuah request dari user hingga menghasilkan response berupa halaman web. Ketika seorang user melakukan permintaan melalui browser, misalnya dengan membuka sebuah URL, permintaan tersebut pertama kali diterima dan dicocokkan oleh urls.py. File ini berperan sebagai router yang menentukan view mana yang harus dijalankan berdasarkan pola URL yang diminta. Setelah itu, permintaan diteruskan ke fungsi atau class view yang ada di views.py. View inilah yang berperan sebagai pengatur logika utama aplikasi. Jika view membutuhkan data dari database, maka ia akan memanggil model yang telah didefinisikan di models.py. Model merepresentasikan tabel pada database, sehingga setiap query data akan dilakukan melalui model, misalnya mengambil semua produk dari tabel Product. Setelah model selesai melakukan transaksi data dengan database, hasilnya dikembalikan lagi ke view.
+
+Data yang sudah diperoleh dari model kemudian dipersiapkan dalam sebuah context dan diteruskan ke berkas template HTML. Template ini berfungsi untuk menyusun tampilan halaman web yang akan dilihat user, dengan cara menyisipkan data ke dalam struktur HTML menggunakan sintaks Django seperti {{ }}. Setelah proses rendering selesai, view mengembalikan template yang sudah berisi data tersebut sebagai response ke browser. Akhirnya, user dapat melihat halaman web dengan tampilan yang sudah rapi sekaligus menampilkan data yang diambil dari database.
+
+Dengan demikian, urls.py, views.py, models.py, dan template HTML saling terkait dalam satu alur kerja: urls.py mengarahkan permintaan, views.py mengelola logika dan menghubungkan komponen lain, models.py menangani akses data, sedangkan template HTML menyajikan data tersebut dalam bentuk halaman web yang dapat diakses oleh user.
 
 
 
