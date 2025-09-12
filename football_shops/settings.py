@@ -81,7 +81,7 @@ ROOT_URLCONF = 'football_shops.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # kalau mau pakai templates global, isi path di sini
+        'DIRS': [BASE_DIR / "templates"], #Ini templates global
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
