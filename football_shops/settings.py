@@ -40,6 +40,15 @@ ALLOWED_HOSTS = [
 
 
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://tirta-rendy-footballshops.pbp.cs.ui.ac.id/"
+]
+
+
+
+
+
+
 
 
 # =========================
