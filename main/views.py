@@ -36,11 +36,10 @@ def product_list_xml(request):
     data = serializers.serialize('xml', products)
     return HttpResponse(data, content_type='application/xml')
 
-
 def product_list_json(request):
     products = Product.objects.all()
     data = serializers.serialize('json', products)
-    return JsonResponse(data, safe=False)
+    return HttpResponse(data, content_type='application/json')
 
 
 # =========================
@@ -55,7 +54,7 @@ def product_detail_xml(request, pk):
 def product_detail_json(request, pk):
     product = get_object_or_404(Product, pk=pk)
     data = serializers.serialize('json', [product])
-    return JsonResponse(data, safe=False)
+    return HttpResponse(data, content_type='application/json')
 
 
 # =========================
@@ -74,7 +73,7 @@ def product_add(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('product_list')  # pastikan nama url 'product_list' ada di urls.py
+            return redirect('product_list') 
     else:
         form = ProductForm()
     return render(request, 'product_form.html', {'form': form})
