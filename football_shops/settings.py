@@ -8,12 +8,12 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# =========================
+# LOAD ENVIRONMENT VARIABLES
+# =========================
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # =========================
 # SECURITY SETTINGS
@@ -29,32 +29,29 @@ SECRET_KEY = os.getenv(
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 
 # Debug mode → otomatis off kalau PRODUCTION=True
-DEBUG = False
+DEBUG = not PRODUCTION
 
 # Hosts yang diizinkan
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "tirta-rendy-footballshops.pbp.cs.ui.ac.id"
+    "tirta-rendy-footballshops.pbp.cs.ui.ac.id",
 ]
 
-
-
+# CSRF settings
 CSRF_TRUSTED_ORIGINS = [
-    "https://tirta-rendy-footballshops.pbp.cs.ui.ac.id/"
+    "https://tirta-rendy-footballshops.pbp.cs.ui.ac.id",
 ]
 
-
-
-
-
-
-
+# Cookies aman (hanya aktif di production/HTTPS)
+CSRF_COOKIE_SECURE = PRODUCTION
+SESSION_COOKIE_SECURE = PRODUCTION
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # =========================
 # APPLICATIONS
 # =========================
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -65,32 +62,28 @@ INSTALLED_APPS = [
     'main',
 ]
 
-
 # =========================
 # MIDDLEWARE
 # =========================
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',  # Wajib ada untuk CSRF
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 # =========================
 # URLS & WSGI
 # =========================
-
 ROOT_URLCONF = 'football_shops.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"], #Ini templates global
+        'DIRS': [BASE_DIR / "templates"],  # Templates global
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -107,9 +100,8 @@ WSGI_APPLICATION = 'football_shops.wsgi.application'
 # =========================
 # DATABASES
 # =========================
-
 if PRODUCTION:
-    # Production: gunakan PostgreSQL
+    # Production: PostgreSQL
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -124,7 +116,7 @@ if PRODUCTION:
         }
     }
 else:
-    # Development: gunakan SQLite
+    # Development: SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -132,11 +124,9 @@ else:
         }
     }
 
-
 # =========================
 # PASSWORD VALIDATION
 # =========================
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -152,27 +142,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # =========================
 # INTERNATIONALIZATION
 # =========================
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
 # =========================
 # STATIC FILES
 # =========================
-
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Untuk collectstatic di production
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Optional: untuk dev
 
 # =========================
 # DEFAULT PRIMARY KEY FIELD
 # =========================
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
