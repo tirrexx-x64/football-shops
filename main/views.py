@@ -78,3 +78,12 @@ def product_add(request):
     else:
         form = ProductForm()
     return render(request, 'product_form.html', {'form': form})
+
+
+
+
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.delete()
+    return redirect('product_list')
+

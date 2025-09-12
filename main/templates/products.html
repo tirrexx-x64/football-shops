@@ -1,14 +1,18 @@
 {% extends "base.html" %}
+
 {% block title %}{{ app_name }} - Products{% endblock %}
 {% block subtitle %}<p class="mt-2 text-lg opacity-90">Semua produk yang tersedia</p>{% endblock %}
 
 {% block content %}
+
+<!-- Back to Home Button -->
 <div class="mb-6 animate-slideInLeft">
   <a href="{% url 'home' %}" id="backBtn" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out font-medium">
     <span>←</span> Back to Home
   </a>
 </div>
 
+<!-- Grid Produk -->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
   {% for p in products %}
     <div class="staggered-item bg-white border rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transform transition-all duration-300">
@@ -17,9 +21,18 @@
         <h3 class="text-lg font-semibold text-gray-800">{{ p.name }}</h3>
         <p class="text-green-600 font-bold mt-1">Rp {{ p.price }}</p>
         <span class="inline-block mt-2 text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{{ p.category }}</span>
-        <div class="mt-2">
-          <a href="{% url 'product_detail' p.id %}" class="text-blue-600 hover:underline">Detail</a>
+
+        <!-- Buttons -->
+        <div class="mt-2 flex gap-3">
+          <a href="{% url 'product_detail' p.pk %}" class="text-blue-600 hover:underline">Detail</a>
+
+          <!-- Delete Form (CSRF-safe) -->
+          <form action="{% url 'product_delete' p.pk %}" method="POST" onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
+            {% csrf_token %}
+            <button type="submit" class="text-red-600 hover:underline">Delete</button>
+          </form>
         </div>
+
       </div>
     </div>
   {% empty %}
@@ -27,7 +40,9 @@
   {% endfor %}
 </div>
 
+<!-- Add Product Button -->
 <div class="text-center mt-6">
   <a href="{% url 'product_add' %}" class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hover:scale-105 transform transition">Add Product</a>
 </div>
+
 {% endblock %}
