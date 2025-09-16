@@ -1,124 +1,48 @@
-<!doctype html>
-<html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ app_name }} - Products</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Page Enter Animation */
-    @keyframes pageEnter {
-      0% { opacity: 0; transform: translateY(20px) scale(0.95); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(30px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideInLeft {
-      0% { opacity: 0; transform: translateX(-30px); }
-      100% { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes staggeredFadeIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .page-enter { animation: pageEnter 0.6s ease-out; }
-    .animate-fadeInUp { animation: fadeInUp 0.8s ease-out; }
-    .animate-slideInLeft { animation: slideInLeft 0.8s ease-out; }
-    .staggered-item { animation: staggeredFadeIn 0.6s ease-out forwards; opacity: 0; }
-    .staggered-item:nth-child(1) { animation-delay: 0.1s; }
-    .staggered-item:nth-child(2) { animation-delay: 0.2s; }
-    .staggered-item:nth-child(3) { animation-delay: 0.3s; }
-    .staggered-item:nth-child(4) { animation-delay: 0.4s; }
-    .staggered-item:nth-child(5) { animation-delay: 0.5s; }
-    .staggered-item:nth-child(6) { animation-delay: 0.6s; }
-    .staggered-item:nth-child(7) { animation-delay: 0.7s; }
-    .staggered-item:nth-child(8) { animation-delay: 0.8s; }
+{% extends "base.html" %}
 
-    /* Page Transition untuk tombol back */
-    .page-transition {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: linear-gradient(45deg, #10b981, #3b82f6);
-      transform: translateX(-100%); z-index: 99999;
-      display: flex; justify-content: center; align-items: center;
-      color: white; font-size: 24px; font-weight: bold; overflow: hidden;
-    }
-    .page-transition.slide-in { animation: slideInTransition 0.6s ease-in-out forwards; }
-    @keyframes slideInTransition { 0% { transform: translateX(-100%); } 50% { transform: translateX(0); } 100% { transform: translateX(0); } }
-    .page-fade-out { animation: fadeOutPage 0.3s ease-out forwards; }
-    @keyframes fadeOutPage { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.95); } }
-  </style>
-</head>
-<body class="min-h-screen flex flex-col bg-gray-100 font-sans page-enter">
-  <!-- Header -->
-  <header class="relative bg-gradient-to-r from-blue-800 to-blue-600 text-white py-8 shadow-lg">
-    <div class="absolute inset-0">
-      <img src="https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg"
-           alt="Football background"
-           class="w-full h-full object-cover opacity-20">
-    </div>
-    <div class="relative z-10 text-center">
-      <h1 class="text-3xl md:text-4xl font-extrabold drop-shadow animate-fadeInUp">{{ app_name }}</h1>
-      <p class="mt-2 text-lg opacity-90">Semua produk yang tersedia</p>
-    </div>
-  </header>
+{% block title %}{{ app_name }} - Products{% endblock %}
+{% block subtitle %}<p class="mt-2 text-lg opacity-90">Semua produk yang tersedia</p>{% endblock %}
 
-  <!-- Container utama (flex-1 agar menekan footer ke bawah) -->
-  <main class="flex-1 max-w-6xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-xl w-full">
-    <!-- Back Button -->
-    <div class="mb-6 animate-slideInLeft">
-      <a href="{% url 'home' %}" id="backBtn"
-         class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out font-medium">
-        <span>←</span> Back to Home
-      </a>
-    </div>
+{% block content %}
 
-    <!-- Products Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {% for p in products %}
-        <div class="staggered-item bg-white border rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transform transition-all duration-300">
-          <img src="{{ p.thumbnail }}" alt="{{ p.name }}" class="w-full h-40 object-cover rounded-t-xl">
-          <div class="p-4">
-            <h3 class="text-lg font-semibold text-gray-800">{{ p.name }}</h3>
-            <p class="text-green-600 font-bold mt-1">Rp {{ p.price }}</p>
-            <span class="inline-block mt-2 text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-              {{ p.category }}
-            </span>
-          </div>
+<!-- Back to Home Button -->
+<div class="mb-6 animate-slideInLeft">
+  <a href="{% url 'home' %}" id="backBtn" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out font-medium">
+    <span>←</span> Back to Home
+  </a>
+</div>
+
+<!-- Grid Produk -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  {% for p in products %}
+    <div class="staggered-item bg-white border rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transform transition-all duration-300">
+      <img src="{{ p.thumbnail }}" alt="{{ p.name }}" class="w-full h-40 object-cover rounded-t-xl">
+      <div class="p-4">
+        <h3 class="text-lg font-semibold text-gray-800">{{ p.name }}</h3>
+        <p class="text-green-600 font-bold mt-1">Rp {{ p.price }}</p>
+        <span class="inline-block mt-2 text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{{ p.category }}</span>
+
+        <!-- Buttons -->
+        <div class="mt-2 flex gap-3">
+          <a href="{% url 'product_detail' p.pk %}" class="text-blue-600 hover:underline">Detail</a>
+
+          <!-- Delete Form (CSRF-safe) -->
+          <form action="{% url 'product_delete' p.pk %}" method="POST" onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
+            {% csrf_token %}
+            <button type="submit" class="text-red-600 hover:underline">Delete</button>
+          </form>
         </div>
-      {% empty %}
-        <p class="col-span-full text-center text-gray-500 italic animate-fadeInUp">
-          Tidak ada produk tersedia saat ini.
-        </p>
-      {% endfor %}
+
+      </div>
     </div>
-  </main>
+  {% empty %}
+    <p class="col-span-full text-center text-gray-500 italic animate-fadeInUp">Tidak ada produk tersedia saat ini.</p>
+  {% endfor %}
+</div>
 
-  <!-- Footer -->
-  <footer class="py-6 text-center bg-gray-900 text-gray-300">
-    <p>&copy; {{ app_name }} — Built with Django and Tailwind by Tirta Rendy Siahaan dengan hati yang tulus eaa</p>
-  </footer>
+<!-- Add Product Button -->
+<div class="text-center mt-6">
+  <a href="{% url 'product_add' %}" class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hover:scale-105 transform transition">Add Product</a>
+</div>
 
-  <!-- Ngetes page transition buat back button, kayaknya sih ga berfungsi  -->
-  <div id="pageTransition" class="page-transition">
-    <div class="text-center">
-      <div class="mb-4">🏠</div>
-      <div>Back to Home...</div>
-    </div>
-  </div>
-
-  <script>
-    //ini buat transisi antar page
-    document.getElementById('backBtn').addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetUrl = this.href;
-      const body = document.body;
-      const transition = document.getElementById('pageTransition');
-      body.classList.add('page-fade-out');
-      transition.classList.add('slide-in');
-      setTimeout(() => { window.location.href = targetUrl; }, 800);
-    });
-  </script>
-</body>
-</html>
+{% endblock %}

@@ -1,193 +1,30 @@
-<!doctype html>
-<html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ app_name }} - Home</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes slideInLeft {
-      0% {
-        opacity: 0;
-        transform: translateX(-50px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    
-    @keyframes bounceIn {
-      0% {
-        opacity: 0;
-        transform: scale(0.3);
-      }
-      50% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-      70% {
-        transform: scale(0.9);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-    
-    .animate-fadeInUp {
-      animation: fadeInUp 1s ease-out;
-    }
-    
-    .animate-slideInLeft {
-      animation: slideInLeft 1.2s ease-out;
-    }
-    
-    .animate-bounceIn {
-      animation: bounceIn 1.5s ease-out;
-    }
-    
-    .animate-delay-500 {
-      animation-delay: 0.5s;
-      animation-fill-mode: both;
-    }
-    
-    /* Page Transition */
-    .page-transition {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: linear-gradient(45deg, #3b82f6, #10b981);
-      transform: translateX(-100%);
-      z-index: 99999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 24px;
-      font-weight: bold;
-      overflow: hidden;
-    }
-    
-    .page-transition.slide-in {
-      animation: slideInTransition 0.6s ease-in-out forwards;
-    }
-    
-    @keyframes slideInTransition {
-      0% { transform: translateX(-100%); }
-      50% { transform: translateX(0); }
-      100% { transform: translateX(0); }
-    }
-    
-    .page-fade-out {
-      animation: fadeOutPage 0.3s ease-out forwards;
-    }
-    
-    @keyframes fadeOutPage {
-      0% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.95); }
-    }
-  </style>
-</head>
-<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+{% extends "base.html" %}
+{% block title %}{{ app_name }} - Home{% endblock %}
+{% block subtitle %}
+<p class="mt-3 text-lg md:text-xl animate-slideInLeft animate-delay-500">{{ student_name }} — {{ student_class }}</p>
+{% endblock %}
 
-  <!-- Hero / Header -->
-  <header class="relative bg-gradient-to-r from-blue-800 to-blue-600 text-white">
-    <div class="absolute inset-0">
-      <img src="https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg"
-           alt="Football stadium oke background"
-           class="w-full h-full object-cover opacity-30">
-    </div>
-    <div class="relative z-10 text-center py-20 px-6">
-      <h1 class="text-4xl md:text-5xl font-extrabold drop-shadow animate-fadeInUp">{{ app_name }}</h1>
-      <p class="mt-3 text-lg md:text-xl animate-slideInLeft animate-delay-500">{{ student_name }} — {{ student_class }}</p>
-    </div>
-  </header>
+{% block content %}
+<h2 class="text-2xl font-bold text-gray-800 mb-6 animate-bounceIn text-center">Produk unggulan</h2>
 
-  <!-- Main Container -->
-  <main class="flex-1 max-w-6xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-xl"><h2 class="text-2xl font-bold text-gray-800 mb-6 animate-bounceIn text-center">
-  Produk unggulan
-</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  {% if featured_products %}
+    {% for p in featured_products %}
+      <div class="bg-white border rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transform transition duration-300">
+        <img src="{{ p.thumbnail }}" alt="{{ p.name }}" class="w-full h-40 object-cover rounded-t-xl">
+        <div class="p-4">
+          <h3 class="text-lg font-semibold text-gray-800">{{ p.name }}</h3>
+          <p class="text-green-600 font-bold mt-1">Rp {{ p.price }}</p>
+          <span class="inline-block mt-2 text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{{ p.category }}</span>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="col-span-full text-center text-gray-500 italic">Tidak ada produk unggulan saat ini.</p>
+  {% endif %}
+</div>
 
-
-    <!-- Products Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {% if featured_products %}
-        {% for p in featured_products %}
-          <div class="bg-white border rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transform transition duration-300">
-            <img src="{{ p.thumbnail }}" alt="{{ p.name }}"
-                 class="w-full h-40 object-cover rounded-t-xl">
-            <div class="p-4">
-              <h3 class="text-lg font-semibold text-gray-800">{{ p.name }}</h3>
-              <p class="text-green-600 font-bold mt-1">Rp {{ p.price }}</p>
-              <span class="inline-block mt-2 text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                {{ p.category }}
-              </span>
-            </div>
-          </div>
-        {% endfor %}
-      {% else %}
-        <p class="col-span-full text-center text-gray-500 italic">
-          Tidak ada produk unggulan saat ini.
-        </p>
-      {% endif %}
-    </div>
-
-    <!-- Buat lihat semua produk -->
-    <div class="text-center mt-8">
-      <a href="{% url 'product_list' %}" id="productBtn"
-         class="relative inline-block bg-gradient-to-r from-green-500 to-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:shadow-2xl hover:scale-110 transform transition-all duration-300 ease-in-out before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-blue-700 before:opacity-0 before:rounded-lg before:transition-opacity before:duration-300 hover:before:opacity-100 overflow-hidden">
-        <span class="relative z-10"> Lihat Semua Produk</span>
-      </a>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="py-6 text-center bg-gray-900 text-gray-300 mt-auto">
-    <p>&copy; {{ app_name }} — Built with Django, Tailwind, and CSS by Tirta Rendy Siahaan dengan hati yang tulus eaa</p>
-  </footer>
-
-<!-- Ngetes page transition buat back button, kayaknya sih ga berfungsi , nnti akan diimprove -->
-  <div id="pageTransition" class="page-transition">
-    <div class="text-center">
-      <div class="mb-4">⚽</div>
-      <div>Loading Products...</div>
-    </div>
-  </div>
-<!--ini buat transisi antar page-->
-  <script>
-    document.getElementById('productBtn').addEventListener('click', function(e) {
-      e.preventDefault(); 
-      
-      const targetUrl = this.href;
-      const body = document.body;
-      const transition = document.getElementById('pageTransition');
-      
-      
-      body.classList.add('page-fade-out');
-      
-    
-      transition.classList.add('slide-in');
-      
-      setTimeout(() => {
-        
-        window.location.href = targetUrl;
-      }, 800);
-    });
-  </script>
-
-</body>
-</html>
+<div class="text-center mt-8">
+  <a href="{% url 'product_list' %}" id="productBtn" class="relative inline-block bg-gradient-to-r from-green-500 to-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:shadow-2xl hover:scale-110 transform transition-all duration-300 ease-in-out">Lihat Semua Produk</a>
+</div>
+{% endblock %}
