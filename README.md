@@ -76,5 +76,7 @@ PAPARAN
 6. Sebagai tambahan refleksi, tutorial yang sudah diberikan asisten dosen sudah cukup membantu untuk memahami implementasi form, validasi, serta pengaturan routing pada Django. Namun, akan lebih baik jika setiap penjelasan tidak hanya fokus pada langkah teknis, tetapi juga pada alasan mengapa langkah tersebut penting dilakukan. Penambahan contoh kasus nyata serta tips debugging juga akan sangat membantu mahasiswa dalam memahami konsep yang lebih dalam, tidak sekadar mengikuti instruksi.
 
 
-
+Sekian dan terima kasih
+Salam,
+Tirta Rendy Siahaan 2406355621
 
