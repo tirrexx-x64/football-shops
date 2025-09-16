@@ -52,3 +52,29 @@ Dengan demikian, urls.py, views.py, models.py, dan template HTML saling terkait 
 Sekian dan terima kasih
 Salam,
 Tirta Rendy Siahaan 2406355621
+
+Selanjutnya pada README Tugas 3 , saya izin saya izin memamparkan jawaban dari beberapa pertanyaan berikut.
+1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+3. Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?
+4. Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+6. Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
+
+PAPARAN 
+
+1. Dalam pengimplementasian sebuah platform, data delivery dibutuhkan agar setiap komponen aplikasi dapat saling berkomunikasi dengan baik. Data delivery memungkinkan data dikirimkan dari satu bagian ke bagian lain secara konsisten, aman, dan dapat diskalakan. Misalnya, frontend memerlukan data dari backend dalam format tertentu agar dapat ditampilkan ke pengguna. Tanpa adanya mekanisme data delivery, pertukaran data akan menjadi sulit diatur, rentan kesalahan, dan tidak fleksibel saat platform berkembang.
+
+2. Jika dibandingkan antara XML dan JSON, keduanya sama-sama digunakan sebagai format pertukaran data, namun JSON lebih populer dalam pengembangan modern. Hal ini karena JSON memiliki struktur yang lebih sederhana, lebih ringkas, dan mudah dipahami baik oleh manusia maupun mesin. JSON juga didukung secara native oleh JavaScript sehingga memudahkan integrasi pada aplikasi web. Sebaliknya, XML cenderung lebih verbose dengan banyak tag pembuka dan penutup. Walaupun XML memiliki keunggulan seperti dukungan schema dan transformasi data yang kuat, JSON tetap lebih dipilih karena efisiensi dan kemudahan penggunaannya dalam API dan aplikasi modern.
+
+3. Dalam framework Django, method is_valid() pada sebuah form digunakan untuk memeriksa apakah data yang dikirim oleh pengguna sudah sesuai dengan aturan validasi yang ditentukan. Method ini sangat penting karena secara otomatis menjalankan validasi pada setiap field form, mengumpulkan error jika ada, dan menghasilkan data yang sudah dibersihkan dalam cleaned_data apabila input dinyatakan valid. Dengan demikian, is_valid() memastikan bahwa hanya data yang benar dan sesuai aturan yang akan diproses atau disimpan ke dalam basis data, sehingga mencegah terjadinya kesalahan maupun potensi masalah keamanan.
+
+4. Penggunaan csrf_token pada form Django juga merupakan hal yang krusial. Token ini melindungi aplikasi dari serangan Cross-Site Request Forgery (CSRF), yaitu serangan yang memanfaatkan kepercayaan sebuah situs terhadap browser pengguna. Tanpa adanya csrf_token, seorang penyerang dapat membuat sebuah halaman berbahaya yang secara diam-diam mengirimkan permintaan POST ke aplikasi yang sedang login di browser korban, misalnya untuk mengubah data atau melakukan transaksi tanpa sepengetahuan pengguna. Oleh karena itu, menambahkan csrf_token memastikan bahwa setiap permintaan berasal dari form yang sah dan bukan dari sumber luar yang berbahaya.
+
+5. Dalam mengimplementasikan checklist tugas, langkah pertama adalah membuat views baru untuk menampilkan data model dalam format XML dan JSON, baik untuk semua objek maupun berdasarkan ID. Setelah itu, dibuat routing URL agar masing-masing view dapat diakses melalui path tertentu. Selanjutnya, dibuat halaman utama yang menampilkan daftar objek dengan tombol “Add” untuk menuju halaman form penambahan data, serta tombol “Detail” yang menampilkan informasi detail tiap objek. Halaman form disiapkan menggunakan ModelForm untuk mempermudah validasi input dan penyimpanan data. Setelah itu, dibuat halaman detail untuk menampilkan informasi lengkap dari objek yang dipilih. Terakhir, seluruh pertanyaan yang diberikan dijawab pada README.md dalam bentuk paragraf untuk mendokumentasikan pemahaman terhadap konsep yang digunakan.
+
+6. Sebagai tambahan refleksi, tutorial yang sudah diberikan asisten dosen sudah cukup membantu untuk memahami implementasi form, validasi, serta pengaturan routing pada Django. Namun, akan lebih baik jika setiap penjelasan tidak hanya fokus pada langkah teknis, tetapi juga pada alasan mengapa langkah tersebut penting dilakukan. Penambahan contoh kasus nyata serta tips debugging juga akan sangat membantu mahasiswa dalam memahami konsep yang lebih dalam, tidak sekadar mengikuti instruksi.
+
+
+
+

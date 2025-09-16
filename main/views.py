@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from django.core import serializers
 from .models import Product
 from .forms import ProductForm
@@ -43,16 +43,15 @@ def product_list_json(request):
 
 
 # =========================
-# Product Detail XML/JSON by ID
+# Product Detail XML/JSON by UUID
 # =========================
-def product_detail_xml(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+def product_detail_xml(request, id):
+    product = get_object_or_404(Product, id=id)
     data = serializers.serialize('xml', [product])
     return HttpResponse(data, content_type='application/xml')
 
-
-def product_detail_json(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+def product_detail_json(request, id):
+    product = get_object_or_404(Product, id=id)
     data = serializers.serialize('json', [product])
     return HttpResponse(data, content_type='application/json')
 
@@ -60,8 +59,8 @@ def product_detail_json(request, pk):
 # =========================
 # Product Detail Page
 # =========================
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+def product_detail(request, id):
+    product = get_object_or_404(Product, id=id)
     return render(request, 'product_detail.html', {'product': product})
 
 
@@ -79,10 +78,10 @@ def product_add(request):
     return render(request, 'product_form.html', {'form': form})
 
 
-
-
-def product_delete(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+# =========================
+# Product Delete
+# =========================
+def product_delete(request, id):
+    product = get_object_or_404(Product, id=id)
     product.delete()
     return redirect('product_list')
-
