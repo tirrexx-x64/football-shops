@@ -83,3 +83,25 @@ Sekian dan terima kasih
 Salam,
 Tirta Rendy Siahaan 2406355621
 
+
+README Lanjutan untuk Tugas 4 :
+1. Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
+2. Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?
+3. Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?
+4. Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+PAPARAN 
+1. Django AuthenticationForm adalah form bawaan Django yang digunakan untuk proses autentikasi login pengguna dengan memvalidasi username dan password terhadap database user yang tersimpan. Kelebihan utama dari AuthenticationForm adalah sifatnya yang praktis karena sudah terintegrasi langsung dengan sistem autentikasi Django, sehingga developer tidak perlu membuat form login dari nol dan validasi keamanan dasar seperti password hashing sudah otomatis dijalankan. Selain itu, form ini juga mudah diperluas atau dikustomisasi sesuai kebutuhan. Namun, kekurangannya adalah sifatnya yang generik sehingga jika aplikasi memerlukan autentikasi dengan field tambahan di luar username dan password, maka developer perlu melakukan override terhadap form tersebut.
+
+2. Autentikasi adalah proses untuk memastikan identitas pengguna, yaitu memverifikasi apakah username dan password yang dimasukkan benar, sedangkan otorisasi adalah proses pengecekan apakah pengguna yang sudah terautentikasi memiliki hak akses untuk melakukan suatu aksi atau mengakses resource tertentu. Django mengimplementasikan autentikasi melalui sistem bawaan django.contrib.auth yang menangani login, logout, dan password hashing. Untuk otorisasi, Django menyediakan mekanisme permissions dan groups yang bisa diterapkan ke model maupun view, sehingga developer dapat mengatur siapa saja yang bisa melihat, mengedit, atau menghapus suatu resource dengan decorator atau middleware.
+
+3. Session dan cookies digunakan untuk menyimpan state pada aplikasi web, tetapi masing-masing memiliki kelebihan dan kekurangan. Cookies disimpan di sisi client sehingga sederhana dan cepat digunakan untuk melacak data kecil seperti preferensi pengguna atau token login, namun lebih rentan terhadap pencurian data (misalnya melalui serangan XSS). Session, di sisi lain, disimpan di sisi server dengan hanya ID session yang dikirim ke client melalui cookies, sehingga lebih aman karena data sensitif tidak tersimpan langsung di browser. Kekurangannya adalah session membutuhkan penyimpanan tambahan di server (misalnya database atau memori), yang bisa menambah overhead terutama pada aplikasi berskala besar.
+
+4. Penggunaan cookies secara default tidak sepenuhnya aman karena rentan terhadap risiko seperti pencurian cookies (session hijacking) atau manipulasi data jika tidak dienkripsi dengan baik. Django menangani hal ini dengan menyediakan beberapa fitur keamanan seperti HttpOnly untuk mencegah akses cookies oleh JavaScript, Secure flag untuk memastikan cookies hanya dikirim melalui HTTPS, dan SESSION_COOKIE_AGE untuk membatasi waktu hidup session. Selain itu, Django secara default menandatangani cookies untuk mencegah pemalsuan data, sehingga meningkatkan keamanan aplikasi dalam mengelola informasi pengguna.
+
+5. Saya mengimplementasikan checklist dengan memulai dari menambahkan sistem autentikasi menggunakan view registrasi, login, dan logout yang memanfaatkan form bawaan Django sekaligus melakukan sedikit kustomisasi sesuai kebutuhan aplikasi. Setelah itu, saya membuat dua akun pengguna secara lokal melalui admin panel maupun perintah createsuperuser lalu menambahkan masing-masing tiga dummy data pada model Product untuk setiap akun agar bisa dilakukan pengujian. Selanjutnya, saya menghubungkan model Product dengan User melalui relasi ForeignKey sehingga setiap produk memiliki pemilik yang jelas. Pada halaman utama aplikasi, saya menambahkan detail informasi pengguna yang sedang login, termasuk username serta informasi last_login yang saya simpan menggunakan cookies untuk memperlihatkan status login terakhir. Setelah semua fitur berjalan sesuai rencana, saya mendokumentasikan seluruh proses ini ke dalam README.md dan kemudian melakukan git add, git commit, dan git push ke repository GitHub agar pekerjaan dapat tersimpan dan dilacak dengan baik.
+
+Salam Hormat,
+Tirta Rendy Siahaan
+2406355621
