@@ -5,7 +5,6 @@
 {% endblock meta %}
 
 {% block content %}
-
 <div>
   <h1>Register</h1>
 
@@ -20,6 +19,22 @@
     </table>
   </form>
 
+  <!-- Menampilkan error validasi -->
+  {% if form.errors %}
+  <div style="color: red; margin-top: 10px;">
+    <ul>
+      {% for field in form %}
+        {% for error in field.errors %}
+          <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
   {% if messages %}
   <ul>
     {% for message in messages %}
@@ -28,5 +43,4 @@
   </ul>
   {% endif %}
 </div>
-
 {% endblock content %}
