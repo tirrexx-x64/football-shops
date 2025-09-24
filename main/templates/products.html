@@ -7,7 +7,8 @@
 
 <!-- Back to Home Button -->
 <div class="mb-6 animate-slideInLeft">
-  <a href="{% url 'home' %}" id="backBtn" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out font-medium">
+  <a href="{% url 'main:show_main' %}" id="backBtn"
+     class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out font-medium">
     <span>←</span> Back to Home
   </a>
 </div>
@@ -24,10 +25,11 @@
 
         <!-- Buttons -->
         <div class="mt-2 flex gap-3">
-          <a href="{% url 'product_detail' p.pk %}" class="text-blue-600 hover:underline">Detail</a>
+          <a href="{% url 'main:show_product' p.pk %}" class="text-blue-600 hover:underline">Detail</a>
 
           <!-- Delete Form (CSRF-safe) -->
-          <form action="{% url 'product_delete' p.pk %}" method="POST" onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
+          <form action="{% url 'main:product_delete' p.pk %}" method="POST"
+                onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
             {% csrf_token %}
             <button type="submit" class="text-red-600 hover:underline">Delete</button>
           </form>
@@ -42,7 +44,10 @@
 
 <!-- Add Product Button -->
 <div class="text-center mt-6">
-  <a href="{% url 'product_add' %}" class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hover:scale-105 transform transition">Add Product</a>
+  <a href="{% url 'main:product_add' %}"
+     class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hover:scale-105 transform transition">
+    Add Product
+  </a>
 </div>
 
 {% endblock %}

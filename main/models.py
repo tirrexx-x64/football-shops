@@ -1,13 +1,16 @@
-import uuid
+# models.py
 from django.db import models
+from django.contrib.auth.models import User
+import uuid
 
 class Product(models.Model):
     id = models.UUIDField(
-    primary_key=True,
-    default=uuid.uuid4,
-    editable=False
-)
-
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+  # 🔑 Tambahkan ini
     name = models.CharField(max_length=255)
     price = models.IntegerField()
     description = models.TextField(blank=True)
