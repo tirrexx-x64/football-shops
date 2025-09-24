@@ -102,6 +102,10 @@ PAPARAN
 
 5. Saya mengimplementasikan checklist dengan memulai dari menambahkan sistem autentikasi menggunakan view registrasi, login, dan logout yang memanfaatkan form bawaan Django sekaligus melakukan sedikit kustomisasi sesuai kebutuhan aplikasi. Setelah itu, saya membuat dua akun pengguna secara lokal melalui admin panel maupun perintah createsuperuser lalu menambahkan masing-masing tiga dummy data pada model Product untuk setiap akun agar bisa dilakukan pengujian. Selanjutnya, saya menghubungkan model Product dengan User melalui relasi ForeignKey sehingga setiap produk memiliki pemilik yang jelas. Pada halaman utama aplikasi, saya menambahkan detail informasi pengguna yang sedang login, termasuk username serta informasi last_login yang saya simpan menggunakan cookies untuk memperlihatkan status login terakhir. Setelah semua fitur berjalan sesuai rencana, saya mendokumentasikan seluruh proses ini ke dalam README.md dan kemudian melakukan git add, git commit, dan git push ke repository GitHub agar pekerjaan dapat tersimpan dan dilacak dengan baik.
 
+
+Bukti buat 2 akun dan 3 product per akun:
+https://drive.google.com/file/d/1SRPqONxus0RJjUQoqtFX2MFkhcCpekav/view?usp=sharing
+
 Salam Hormat,
 Tirta Rendy Siahaan
 2406355621
