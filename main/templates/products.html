@@ -13,40 +13,54 @@
   </a>
 </div>
 
-<!-- Grid Produk -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-  {% for p in products %}
-    <div class="staggered-item bg-white border rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transform transition-all duration-300">
-      <img src="{{ p.thumbnail }}" alt="{{ p.name }}" class="w-full h-40 object-cover rounded-t-xl">
-      <div class="p-4">
-        <h3 class="text-lg font-semibold text-gray-800">{{ p.name }}</h3>
-        <p class="text-green-600 font-bold mt-1">Rp {{ p.price }}</p>
-        <span class="inline-block mt-2 text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{{ p.category }}</span>
+{% if products %}
+  <!-- Grid Produk -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% for p in products %}
+      <div class="staggered-item bg-white border rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transform transition-all duration-300">
+        <img src="{{ p.thumbnail }}" alt="{{ p.name }}" class="w-full h-40 object-cover rounded-t-xl">
+        <div class="p-4 flex flex-col h-full">
+          <h3 class="text-lg font-semibold text-gray-800">{{ p.name }}</h3>
+          <p class="text-green-600 font-bold mt-1">Rp {{ p.price }}</p>
+          <span class="inline-block mt-2 text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{{ p.category }}</span>
 
-        <!-- Buttons -->
-        <div class="mt-2 flex gap-3">
-          <a href="{% url 'main:show_product' p.pk %}" class="text-blue-600 hover:underline">Detail</a>
-
-          <!-- Delete Form (CSRF-safe) -->
-          <form action="{% url 'main:product_delete' p.pk %}" method="POST"
-                onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
-            {% csrf_token %}
-            <button type="submit" class="text-red-600 hover:underline">Delete</button>
-          </form>
+          <!-- Buttons -->
+          <div class="mt-4 flex gap-2">
+            <a href="{% url 'main:show_product' p.pk %}" 
+               class="flex-1 text-center px-3 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition">Detail</a>
+            <a href="{% url 'main:product_edit' p.pk %}" 
+               class="flex-1 text-center px-3 py-2 bg-yellow-500 text-white rounded-lg text-sm hover:bg-yellow-600 transition">Edit</a>
+            <form action="{% url 'main:product_delete' p.pk %}" method="POST" 
+                  onsubmit="return confirm('Yakin ingin menghapus produk ini?');" class="flex-1">
+              {% csrf_token %}
+              <button type="submit" 
+                      class="w-full px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600 transition">
+                Delete
+              </button>
+            </form>
+          </div>
         </div>
-
       </div>
-    </div>
-  {% empty %}
-    <p class="col-span-full text-center text-gray-500 italic animate-fadeInUp">Tidak ada produk tersedia saat ini.</p>
-  {% endfor %}
-</div>
+    {% endfor %}
+  </div>
+{% else %}
+  <!-- Tampilan jika tidak ada produk -->
+  <div class="flex flex-col items-center justify-center py-16 animate-fadeInUp">
+    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076508.png" 
+         alt="No Products" class="w-40 h-40 mb-6 opacity-70">
+    <p class="text-gray-500 text-lg italic">Belum ada produk yang tersedia.</p>
+    <a href="{% url 'main:product_add' %}" 
+       class="mt-4 px-6 py-3 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600 transition">
+      Tambah Produk Pertama
+    </a>
+  </div>
+{% endif %}
 
 <!-- Add Product Button -->
-<div class="text-center mt-6">
+<div class="text-center mt-8">
   <a href="{% url 'main:product_add' %}"
-     class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hover:scale-105 transform transition">
-    Add Product
+     class="inline-block bg-gradient-to-r from-blue-600 to-green-500 text-white px-8 py-3 rounded-full shadow-lg hover:scale-105 transform transition">
+    + Add Product
   </a>
 </div>
 

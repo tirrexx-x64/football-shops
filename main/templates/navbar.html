@@ -1,0 +1,58 @@
+<!-- templates/navbar.html -->
+<nav class="bg-blue-600 text-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <a href="{% url 'main:show_main' %}" class="text-xl font-bold hover:text-gray-200">
+          Football Shops by Tirta Siahaan
+        </a>
+      </div>
+
+      <!-- Menu (desktop) -->
+      <div class="hidden md:flex space-x-6 items-center">
+        <a href="{% url 'main:product_list' %}" class="hover:text-gray-200">Products</a>
+        <a href="{% url 'main:product_add' %}" class="hover:text-gray-200">Add Product</a>
+        {% if user.is_authenticated %}
+          <span class="text-sm">Hi, {{ user.username }}</span>
+          <a href="{% url 'main:logout' %}" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
+        {% else %}
+          <a href="{% url 'main:login' %}" class="hover:text-gray-200">Login</a>
+          <a href="{% url 'main:register' %}" class="bg-green-500 px-3 py-1 rounded hover:bg-green-600">Register</a>
+        {% endif %}
+      </div>
+
+      <!-- Burger menu (mobile) -->
+      <div class="md:hidden flex items-center">
+        <button id="menu-btn" class="focus:outline-none">
+          <!-- ikon hamburger -->
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu mobile -->
+  <div id="menu" class="hidden md:hidden px-4 pb-3 space-y-2">
+    <a href="{% url 'main:product_list' %}" class="block hover:text-gray-200">Products</a>
+    <a href="{% url 'main:product_add' %}" class="block hover:text-gray-200">Add Product</a>
+    {% if user.is_authenticated %}
+      <span class="block text-sm">Hi, {{ user.username }}</span>
+      <a href="{% url 'main:logout' %}" class="block bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
+    {% else %}
+      <a href="{% url 'main:login' %}" class="block hover:text-gray-200">Login</a>
+      <a href="{% url 'main:register' %}" class="block bg-green-500 px-3 py-1 rounded hover:bg-green-600">Register</a>
+    {% endif %}
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById("menu-btn");
+  const menu = document.getElementById("menu");
+  btn.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+  });
+</script>

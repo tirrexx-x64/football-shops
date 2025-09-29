@@ -18,5 +18,7 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
+    path("products/<str:id>/edit/", views.product_edit, name="product_edit"),
+
     
 ]

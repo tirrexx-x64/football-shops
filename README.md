@@ -109,3 +109,33 @@ https://drive.google.com/file/d/1SRPqONxus0RJjUQoqtFX2MFkhcCpekav/view?usp=shari
 Salam Hormat,
 Tirta Rendy Siahaan
 2406355621
+
+
+
+
+README untuk TUGAS 5
+DAFTAR PERTANYAAN :
+
+1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+
+
+JAWABAN :
+1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, browser akan menentukan prioritasnya berdasarkan aturan specificity dan urutan munculnya kode. Selector dengan tingkat specificity lebih tinggi akan diprioritaskan. Urutan tingkatannya adalah: inline style memiliki prioritas paling tinggi, kemudian selector ID, disusul oleh selector class, pseudo-class, dan attribute, lalu terakhir adalah selector elemen dan pseudo-elemen. Jika dua selector memiliki tingkat specificity yang sama, maka CSS yang ditulis paling akhir dalam file atau urutan load akan digunakan. Selain itu, deklarasi dengan !important dapat menimpa aturan lain meskipun specificity-nya lebih rendah, tetapi penggunaannya sebaiknya dihindari karena dapat menyulitkan pengelolaan kode CSS.
+
+2. Responsive design adalah konsep penting karena aplikasi web digunakan pada berbagai perangkat dengan ukuran layar yang berbeda, mulai dari smartphone, tablet, hingga desktop. Tanpa responsive design, tampilan web bisa rusak, teks sulit dibaca, atau tombol terlalu kecil untuk diakses di layar kecil. Sebagai contoh, Instagram adalah aplikasi yang sudah menerapkan responsive design dengan baik, sehingga tampilan feed dan tombol tetap nyaman digunakan baik di smartphone maupun komputer. Sebaliknya, beberapa website lama, misalnya situs berita dengan desain tahun 2000-an, belum menerapkan responsive design sehingga tampilan kontennya melebar melebihi layar ponsel dan pengguna harus melakukan zoom in/out untuk membaca.
+
+3. Margin, border, dan padding adalah tiga komponen penting dalam box model CSS. Margin adalah ruang di luar elemen yang memberi jarak antara elemen satu dengan lainnya. Border adalah garis yang mengelilingi elemen di antara margin dan padding, yang bisa memiliki warna, ketebalan, dan gaya tertentu. Padding adalah ruang di dalam elemen, yaitu jarak antara konten dan border elemen. Contohnya: margin: 10px; border: 2px solid black; padding: 5px; akan memberikan jarak 10 piksel di luar elemen, garis tepi hitam setebal 2 piksel, dan ruang kosong 5 piksel di dalam antara konten dengan border.
+
+4. Flexbox dan Grid Layout adalah dua teknik layout modern di CSS. Flexbox digunakan untuk menyusun elemen dalam satu dimensi, baik secara horizontal (row) maupun vertikal (column). Flexbox sangat berguna untuk membuat tata letak navigasi, tombol yang sejajar, atau card yang rata. Grid Layout digunakan untuk menyusun elemen dalam dua dimensi (baris dan kolom) secara terstruktur. Dengan grid, kita bisa mendefinisikan area layout yang kompleks seperti halaman dashboard dengan sidebar, header, dan konten utama. Keduanya sangat membantu menghindari penggunaan float atau positioning manual yang merepotkan.
+
+5. Implementasi checklist di atas saya lakukan secara bertahap dan mandiri, bukan sekadar mengikuti tutorial. Pertama, saya memahami dasar CSS specificity dan mencoba langsung di kode dengan membuat elemen yang memiliki class, id, dan inline style untuk melihat prioritasnya. Kedua, saya membuat halaman sederhana lalu menguji bagaimana tampilannya di berbagai perangkat dan menggunakan media query untuk membuatnya responsif. Ketiga, saya mempraktikkan box model dengan menambahkan margin, border, dan padding pada div sederhana untuk memahami perbedaannya secara visual. Keempat, saya membuat contoh layout dengan flexbox untuk navbar dan dengan grid layout untuk halaman produk. Terakhir, semua hasil percobaan saya gabungkan ke dalam proyek Django yang saya kerjakan, sehingga setiap konsep terimplementasi nyata sesuai kebutuhan aplikasi.
+
+
+Salam Hormat, 
+Tirta Rendy Siahaan
+2406355621
+
