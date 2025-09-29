@@ -1,18 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}{{ app_name }} - Add Product{% endblock %}
-{% block subtitle %}<p class="mt-2 text-lg opacity-90">Tambah Produk Baru</p>{% endblock %}
+{% block title %}
+  {{ app_name }} - {% if is_edit %}Edit{% else %}Add{% endif %} Product
+{% endblock %}
+
+{% block subtitle %}
+  <p class="mt-2 text-lg opacity-90">
+    {% if is_edit %}Edit Produk{% else %}Tambah Produk Baru{% endif %}
+  </p>
+{% endblock %}
 
 {% block content %}
 <div class="mb-6">
-  <a href="{% url 'main:product_list' %}" id="backBtn" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out">
+  <a href="{% url 'main:product_list' %}" id="backBtn"
+     class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out">
     <span>←</span> Back to Products
   </a>
 </div>
 
-<form method="POST" class="max-w-2xl mx-auto bg-gray-50 p-6 rounded-xl shadow-lg space-y-4">
+<form method="POST"
+      class="max-w-2xl mx-auto bg-gray-50 p-6 rounded-xl shadow-lg space-y-4">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700">Save</button>
+  <button type="submit"
+          class="bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300">
+    {% if is_edit %}Update{% else %}Save{% endif %}
+  </button>
 </form>
 {% endblock %}

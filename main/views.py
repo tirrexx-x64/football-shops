@@ -159,3 +159,25 @@ def logout_user(request):
     response = redirect('main:login')   # pakai namespace
     response.delete_cookie('last_login')
     return response
+
+
+# =========================
+# Product Edit
+# =========================
+@login_required(login_url='/login')
+def product_edit(request, id):
+    product = get_object_or_404(Product, id=id)
+
+    # hanya pemilik produk yang boleh edit
+    if product.user != request.user:
+        return redirect('main:product_list')
+
+    if request.method == "POST":
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('main:product_list')
+    else:
+        form = ProductForm(instance=product)
+
+    return render(request, "product_form.html", {"form": form, "is_edit": True})
