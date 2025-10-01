@@ -10,7 +10,7 @@ class Product(models.Model):
         editable=False
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-  # 🔑 Tambahkan ini
+  
     name = models.CharField(max_length=255)
     price = models.IntegerField()
     description = models.TextField(blank=True)
@@ -18,7 +18,7 @@ class Product(models.Model):
     category = models.CharField(max_length=100, blank=True)
     is_featured = models.BooleanField(default=False)
     stock = models.IntegerField(default=0)
-    brand = models.CharField(max_length=100, blank=True)
+    brand = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
