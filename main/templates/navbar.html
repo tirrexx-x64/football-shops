@@ -12,10 +12,9 @@
       <!-- Menu (desktop) -->
       <div class="hidden md:flex space-x-6 items-center">
         <a href="{% url 'main:product_list' %}" class="hover:text-gray-200">Products</a>
-        <a href="{% url 'main:product_add' %}" class="hover:text-gray-200">Add Product</a>
         {% if user.is_authenticated %}
           <span class="text-sm">Hi, {{ user.username }}</span>
-          <a href="{% url 'main:logout' %}" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
+          <button onclick="handleNavLogout()" id="navLogoutBtn" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</button>
         {% else %}
           <a href="{% url 'main:login' %}" class="hover:text-gray-200">Login</a>
           <a href="{% url 'main:register' %}" class="bg-green-500 px-3 py-1 rounded hover:bg-green-600">Register</a>
@@ -25,7 +24,6 @@
       <!-- Burger menu (mobile) -->
       <div class="md:hidden flex items-center">
         <button id="menu-btn" class="focus:outline-none">
-          <!-- ikon hamburger -->
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M4 6h16M4 12h16m-7 6h7"/>
@@ -38,10 +36,9 @@
   <!-- Menu mobile -->
   <div id="menu" class="hidden md:hidden px-4 pb-3 space-y-2">
     <a href="{% url 'main:product_list' %}" class="block hover:text-gray-200">Products</a>
-    <a href="{% url 'main:product_add' %}" class="block hover:text-gray-200">Add Product</a>
     {% if user.is_authenticated %}
       <span class="block text-sm">Hi, {{ user.username }}</span>
-      <a href="{% url 'main:logout' %}" class="block bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
+      <button onclick="handleNavLogout()" id="navLogoutBtnMobile" class="block bg-red-500 px-3 py-1 rounded hover:bg-red-600 w-full text-left">Logout</button>
     {% else %}
       <a href="{% url 'main:login' %}" class="block hover:text-gray-200">Login</a>
       <a href="{% url 'main:register' %}" class="block bg-green-500 px-3 py-1 rounded hover:bg-green-600">Register</a>
@@ -49,10 +46,128 @@
   </div>
 </nav>
 
+<!-- Toast Container for Navbar -->
+<div id="navToastContainer" class="fixed top-6 right-6 z-50 space-y-4"></div>
+
 <script>
   const btn = document.getElementById("menu-btn");
   const menu = document.getElementById("menu");
   btn.addEventListener("click", () => {
     menu.classList.toggle("hidden");
   });
+
+  // Toast function for navbar
+  function showNavToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `transform transition-all duration-500 ease-in-out translate-x-0 opacity-100 max-w-md w-96 bg-white shadow-2xl rounded-2xl pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden animate-slideInRight`;
+    
+    const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+    const icon = type === 'success' ? '✓' : '✕';
+    
+    toast.innerHTML = `
+      <div class="p-6 flex items-start gap-4">
+        <div class="${bgColor} rounded-full p-4 text-white font-bold text-2xl w-14 h-14 flex items-center justify-center">
+          ${icon}
+        </div>
+        <div class="flex-1 pt-1">
+          <p class="text-lg font-semibold text-gray-900">${type === 'success' ? 'Success!' : 'Error!'}</p>
+          <p class="mt-1 text-gray-700 text-sm">${message}</p>
+        </div>
+        <button onclick="this.parentElement.parentElement.remove()" 
+                class="bg-white rounded-full text-gray-400 hover:text-gray-600 focus:outline-none text-3xl px-2">
+          &times;
+        </button>
+      </div>
+      <div class="h-2 ${bgColor} nav-toast-progress rounded-b-2xl"></div>
+    `;
+    
+    document.getElementById('navToastContainer').appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.transform = 'translateX(500px) rotate(10deg)';
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 600);
+    }, 4000);
+  }
+
+  // Handle logout from navbar
+  async function handleNavLogout() {
+    const btn = document.getElementById('navLogoutBtn');
+    const btnMobile = document.getElementById('navLogoutBtnMobile');
+    
+    if (btn) {
+      btn.innerHTML = '<span class="animate-pulse">...</span>';
+      btn.disabled = true;
+    }
+    if (btnMobile) {
+      btnMobile.innerHTML = '<span class="animate-pulse">...</span>';
+      btnMobile.disabled = true;
+    }
+    
+    try {
+      const response = await fetch("{% url 'main:logout_ajax' %}", {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        showNavToast(data.message, 'success');
+        setTimeout(() => {
+          window.location.href = "{% url 'main:login' %}";
+        }, 1000);
+      } else {
+        showNavToast('Logout failed', 'error');
+        if (btn) { btn.innerHTML = 'Logout'; btn.disabled = false; }
+        if (btnMobile) { btnMobile.innerHTML = 'Logout'; btnMobile.disabled = false; }
+      }
+    } catch (error) {
+      showNavToast('An error occurred', 'error');
+      if (btn) { btn.innerHTML = 'Logout'; btn.disabled = false; }
+      if (btnMobile) { btnMobile.innerHTML = 'Logout'; btnMobile.disabled = false; }
+    }
+  }
+
+  // Get CSRF token from cookies
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
 </script>
+
+<style>
+  @keyframes nav-progress {
+    from { width: 100%; }
+    to { width: 0%; }
+  }
+  .nav-toast-progress {
+    animation: nav-progress 4s linear;
+  }
+
+  @keyframes slideInRight {
+    0% {
+      transform: translateX(100%) scale(0.9);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+  }
+  .animate-slideInRight {
+    animation: slideInRight 0.5s ease-out forwards;
+  }
+</style>
