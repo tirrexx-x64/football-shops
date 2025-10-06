@@ -139,3 +139,32 @@ Salam Hormat,
 Tirta Rendy Siahaan
 2406355621
 
+
+INI README UNTUK TUGAS 6
+
+PERTANYAAN DAN JAWABAN :
+
+1. Apa perbedaan antara synchronous request dan asynchronous request?
+Jawaban:
+Synchronous request adalah jenis permintaan di mana browser menunggu server merespons sebelum melakukan aksi lain. Selama request berlangsung, pengguna tidak bisa berinteraksi dengan halaman, seperti halnya pada form submit tradisional. Sedangkan asynchronous request memungkinkan browser tetap berinteraksi dengan halaman meskipun permintaan sedang diproses di background. Contohnya adalah AJAX, di mana data dikirim dan diterima tanpa memerlukan reload halaman penuh.
+
+2. Bagaimana AJAX bekerja di Django (alur request–response)?
+Jawaban:
+AJAX bekerja dengan mengirim request dari frontend melalui JavaScript, misalnya menggunakan fetch() atau jQuery $.ajax(), saat pengguna melakukan aksi seperti klik tombol atau submit form. Request ini dikirim ke URL endpoint yang ditangani oleh Django. Di sisi server, view Django menerima request, memproses data, dan mengembalikan response dalam format JSON atau HTML fragment. Response ini kemudian diterima oleh JavaScript di frontend, yang selanjutnya memperbarui DOM sesuai data yang diterima tanpa memuat ulang seluruh halaman.
+
+3. Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?
+Jawaban:
+Penggunaan AJAX memberikan beberapa keuntungan dibandingkan render tradisional di Django. Pertama, halaman tidak perlu reload penuh, sehingga proses lebih cepat dan efisien. Kedua, hanya bagian tertentu dari halaman yang diperbarui, sehingga menghemat bandwidth. Ketiga, AJAX membuat interaksi lebih interaktif dan real-time, misalnya validasi form dan tampilan error secara langsung tanpa berpindah halaman. Hal ini secara keseluruhan meningkatkan performa dan kenyamanan pengguna.
+
+4. Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?
+Jawaban:
+Untuk menjaga keamanan saat menggunakan AJAX pada fitur Login dan Register, perlu diperhatikan beberapa hal. Pertama, selalu gunakan CSRF token pada setiap request POST untuk mencegah serangan CSRF. Kedua, jangan menaruh password di URL; gunakan metode POST dengan HTTPS untuk keamanan data. Ketiga, lakukan validasi input di sisi server, jangan hanya mengandalkan validasi di client side. Keempat, batasi percobaan login agar tidak mudah terkena brute-force attack. Terakhir, pastikan response error tidak mengandung informasi sensitif yang bisa dimanfaatkan penyerang.
+
+5. Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?
+Jawaban:
+AJAX meningkatkan pengalaman pengguna dengan mengurangi waktu tunggu karena halaman tidak perlu reload penuh. Hal ini memungkinkan pengguna melihat feedback instan, seperti loading spinner atau validasi form secara realtime. Interaksi menjadi lebih dinamis dan modern, dan pengguna bisa menerima update data secara langsung, misalnya fitur live search atau notifikasi baru. Dengan demikian, penggunaan AJAX membuat website terasa lebih responsif dan interaktif.
+
+
+Salam Hormat,
+Tirta Rendy Siahaan
+2406355621

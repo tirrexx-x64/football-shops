@@ -1,43 +1,170 @@
 {% extends "base.html" %}
 
-{% block title %}Register - {{ app_name }}{% endblock %}
+{% block title %}Register - Football Shop{% endblock %}
 {% block subtitle %}<p class="mt-2 text-lg opacity-90">Buat akun baru sekarang</p>{% endblock %}
 
 {% block content %}
 <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 animate-fadeInUp">
   <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Register</h2>
 
-  <form method="POST" class="space-y-5">
+  <form id="registerForm" class="space-y-5">
     {% csrf_token %}
-    {{ form.non_field_errors }}
 
-    {% for field in form %}
-      <div>
-        <label class="block mb-1 text-sm font-medium text-gray-700">{{ field.label }}</label>
-        {{ field }}
-        {% if field.errors %}
-          <p class="text-red-500 text-sm mt-1">{{ field.errors.0 }}</p>
-        {% endif %}
-      </div>
-    {% endfor %}
+    <div>
+      <label class="block mb-1 text-sm font-medium text-gray-700">Username</label>
+      <input type="text" name="username" id="username" required
+             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+      <p class="text-xs text-gray-500 mt-1">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</p>
+    </div>
 
-    <button type="submit" 
+    <div>
+      <label class="block mb-1 text-sm font-medium text-gray-700">Password</label>
+      <input type="password" name="password1" id="password1" required
+             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+      <p class="text-xs text-gray-500 mt-1">Your password must contain at least 8 characters.</p>
+    </div>
+
+    <div>
+      <label class="block mb-1 text-sm font-medium text-gray-700">Password confirmation</label>
+      <input type="password" name="password2" id="password2" required
+             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+      <p class="text-xs text-gray-500 mt-1">Enter the same password as before, for verification.</p>
+    </div>
+
+    <button type="submit" id="registerBtn"
             class="w-full bg-green-600 text-white py-3 rounded-lg shadow-md hover:bg-green-700 transition">
       Daftar
     </button>
   </form>
-
-  {% if messages %}
-    <div class="mt-4">
-      {% for message in messages %}
-        <p class="text-center text-blue-600 text-sm">{{ message }}</p>
-      {% endfor %}
-    </div>
-  {% endif %}
 
   <p class="text-sm text-center text-gray-600 mt-6">
     Sudah punya akun? 
     <a href="{% url 'main:login' %}" class="text-blue-600 hover:underline">Login di sini</a>
   </p>
 </div>
+
+<div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-4"></div>
+
+<template id="toastTemplate">
+  <div class="transform transition-all duration-500 ease-in-out scale-95 translate-x-8 opacity-0 max-w-md w-full bg-white shadow-2xl rounded-xl pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+    <div class="p-6 md:p-8">
+      <div class="flex items-start">
+        <div class="flex-shrink-0">
+          <div id="toastIconContainer" class="rounded-full p-4 text-white font-extrabold text-2xl w-14 h-14 flex items-center justify-center">
+            <span id="toastIcon"></span>
+          </div>
+        </div>
+        <div class="ml-5 w-0 flex-1 pt-0.5">
+          <p id="toastTitle" class="text-xl md:text-2xl font-bold text-gray-900"></p>
+          <p id="toastMessage" class="mt-2 text-md md:text-lg text-gray-700"></p>
+        </div>
+        <div class="ml-5 flex-shrink-0 flex">
+          <button onclick="this.closest('div.transform').remove()" class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none">
+            <span class="text-3xl">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="toastProgress" class="h-2 toast-progress rounded-b-2xl"></div>
+  </div>
+</template>
+
+
+<script>
+ 
+  function showToast(message, type = 'success') {
+    // 1. Ambil blueprint dari HTML dan buat salinannya (clone)
+    const template = document.getElementById('toastTemplate');
+    const toastClone = template.content.cloneNode(true);
+    const toast = toastClone.firstElementChild; // Dapatkan elemen div utama dari hasil clone
+
+    // 2. Pilih elemen-elemen di dalam toast yang akan diubah
+    const iconContainer = toast.querySelector('#toastIconContainer');
+    const icon = toast.querySelector('#toastIcon');
+    const title = toast.querySelector('#toastTitle');
+    const messageP = toast.querySelector('#toastMessage');
+    const progress = toast.querySelector('#toastProgress');
+
+    // 3. Atur konten dan style berdasarkan tipe (success/error)
+    if (type === 'success') {
+      iconContainer.classList.add('bg-green-500');
+      progress.classList.add('bg-green-500');
+      icon.innerText = '✓';
+      title.innerText = 'Success!';
+    } else {
+      iconContainer.classList.add('bg-red-500');
+      progress.classList.add('bg-red-500');
+      icon.innerText = '✕';
+      title.innerText = 'Error!';
+    }
+    messageP.innerText = message;
+
+    // 4. Tambahkan toast yang sudah jadi ke dalam container
+    document.getElementById('toastContainer').appendChild(toast);
+
+    // Animasi masuk (logika ini tetap sama)
+    setTimeout(() => {
+      toast.style.transform = 'translateX(0) scale(1)';
+      toast.style.opacity = '1';
+    }, 50);
+
+    // Hapus otomatis dengan animasi keluar 
+    setTimeout(() => {
+      toast.style.transform = 'translateX(400px) scale(0.9)';
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 500);
+    }, 4000);
+  }
+
+  // Handle register form submission
+  document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const registerBtn = document.getElementById('registerBtn');
+    const originalText = registerBtn.innerHTML;
+    registerBtn.innerHTML = '<span class="animate-pulse">Creating account...</span>';
+    registerBtn.disabled = true;
+
+    const formData = new FormData(this);
+
+    try {
+      const response = await fetch("{% url 'main:register' %}", {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        }
+      });
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        showToast(data.message, 'success');
+        setTimeout(() => {
+          window.location.href = "{% url 'main:login' %}";
+        }, 1500);
+      } else {
+        // Error toast (misal username already exists)
+        showToast(data.message, 'error');
+        registerBtn.innerHTML = originalText;
+        registerBtn.disabled = false;
+      }
+    } catch (error) {
+      showToast('An error occurred. Please try again.', 'error');
+      registerBtn.innerHTML = originalText;
+      registerBtn.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  @keyframes progress {
+    from { width: 100%; }
+    to { width: 0%; }
+  }
+  
+  .toast-progress {
+    animation: progress 4s linear forwards;
+  }
+</style>
 {% endblock %}

@@ -1,16 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}{{ app_name }} - Home{% endblock %}
+{% block title %}Football Shop - Home{% endblock %}
 
 {% block subtitle %}
-<!-- Nama dan Kelas dengan Gradient -->
 <p class="mt-3 text-lg md:text-2xl font-extrabold animate-slideInLeft animate-delay-500 text-white">
   {{ student_name }} — {{ student_class }}
 </p>
 
-
 {% if user.is_authenticated %}
-  <!-- Selamat datang & Last Login dengan background gradient -->
   <div class="mt-3 inline-block rounded-lg px-5 py-3 shadow-md animate-slideInLeft bg-gradient-to-r from-blue-100 via-indigo-100 to-purple-100">
     <p class="text-md md:text-lg font-semibold text-gray-800">
       Selamat datang, 
@@ -24,47 +21,26 @@
 {% endblock %}
 
 {% block content %}
-<!-- Judul Produk Unggulan -->
 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-6 animate-bounceIn text-center tracking-tight">
   Produk Unggulan
 </h2>
 
-<!-- Grid Produk -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-  {% if featured_products %}
-    {% for p in featured_products %}
-      <div class="bg-white border rounded-xl shadow-md hover:shadow-xl hover:scale-105 transform transition-all duration-300">
-        <img src="{{ p.thumbnail }}" alt="{{ p.name }}" class="w-full h-44 object-cover rounded-t-xl">
-        <div class="p-4">
-          <h3 class="text-lg md:text-xl font-semibold text-gray-900 tracking-wide">{{ p.name }}</h3>
-          <p class="text-green-600 font-bold mt-1 text-md md:text-lg">Rp {{ p.price }}</p>
-          <span class="inline-block mt-2 text-sm md:text-base text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{{ p.category }}</span>
-        </div>
-      </div>
-    {% endfor %}
-  {% else %}
-    <p class="col-span-full text-center text-gray-500 italic">Tidak ada produk unggulan saat ini.</p>
-  {% endif %}
-</div>
+<!-- Products Container -->
+<div id="featuredProductsContainer"></div>
 
-<!-- Tombol -->
+<!-- Buttons -->
 <div class="text-center mt-8 space-x-4">
-  <!-- Lihat Semua Produk -->
   <a href="{% url 'main:product_list' %}" id="productBtn"
-   class="relative inline-block bg-green-500 text-white px-8 py-4 rounded-xl font-extrabold text-lg md:text-xl shadow-lg hover:shadow-2xl hover:scale-110 transform transition-all duration-300 ease-in-out">
-   Lihat Semua Produk
-</a>
-
+     class="relative inline-block bg-green-500 text-white px-8 py-4 rounded-xl font-extrabold text-lg md:text-xl shadow-lg hover:shadow-2xl hover:scale-110 transform transition-all duration-300 ease-in-out">
+    Lihat Semua Produk
+  </a>
 
   {% if user.is_authenticated %}
-    <!-- Logout -->
-    <a href="{% url 'main:logout' %}">
-      <button class="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-red-600 transition duration-300 text-base md:text-lg">
-        Logout
-      </button>
-    </a>
+    <button onclick="handleLogout()" id="logoutBtn"
+            class="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-red-600 transition duration-300 text-base md:text-lg">
+      Logout
+    </button>
   {% else %}
-    <!-- Login & Register -->
     <a href="{% url 'main:login' %}">
       <button class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-blue-600 transition duration-300 text-base md:text-lg">
         Login
@@ -77,4 +53,155 @@
     </a>
   {% endif %}
 </div>
+
+<!-- Toast Container -->
+<div id="toastContainer" class="fixed top-6 right-6 z-50 space-y-4"></div>
+
+<script>
+  
+  function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `transform transition-all duration-500 ease-in-out translate-x-0 opacity-100 max-w-md w-96 bg-white shadow-2xl rounded-2xl pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden animate-slideInRight`;
+
+    const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+    const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ';
+
+    toast.innerHTML = `
+      <div class="p-6 flex items-start gap-4">
+        <div class="${bgColor} rounded-full p-4 text-white font-bold text-2xl w-14 h-14 flex items-center justify-center">
+          ${icon}
+        </div>
+        <div class="flex-1 pt-1">
+          <p class="text-lg font-semibold text-gray-900">${type === 'success' ? 'Success!' : type === 'error' ? 'Error!' : 'Info'}</p>
+          <p class="mt-1 text-gray-700 text-sm">${message}</p>
+        </div>
+        <button onclick="this.parentElement.parentElement.remove()" 
+                class="bg-white rounded-full text-gray-400 hover:text-gray-600 focus:outline-none text-3xl px-2">
+          &times;
+        </button>
+      </div>
+      <div class="h-2 ${bgColor} toast-progress rounded-b-2xl"></div>
+    `;
+
+    document.getElementById('toastContainer').appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.transform = 'translateX(500px) rotate(10deg)';
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 600);
+    }, 4000);
+  }
+
+  // Fetch featured products
+  async function loadFeaturedProducts() {
+    const container = document.getElementById('featuredProductsContainer');
+
+    container.innerHTML = `
+      <div class="flex justify-center items-center py-16">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
+      </div>
+    `;
+
+    try {
+      const response = await fetch("{% url 'main:get_products_ajax' %}");
+      const data = await response.json();
+      const products = data.products.filter(p => p.is_featured);
+
+      if (products.length === 0) {
+        container.innerHTML = `
+          <p class="text-center text-gray-500 italic py-8">Tidak ada produk unggulan saat ini.</p>
+        `;
+        return;
+      }
+
+      let html = '<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">';
+      products.forEach(product => {
+        html += `
+          <div class="bg-white border rounded-xl shadow-md hover:shadow-xl hover:scale-105 transform transition-all duration-300">
+            <img src="${product.thumbnail || 'https://via.placeholder.com/300x200?text=No+Image'}" 
+                 alt="${product.name}" 
+                 class="w-full h-44 object-cover rounded-t-xl">
+            <div class="p-4">
+              <h3 class="text-lg md:text-xl font-semibold text-gray-900 tracking-wide">${product.name}</h3>
+              <p class="text-green-600 font-bold mt-1 text-md md:text-lg">Rp ${product.price.toLocaleString('id-ID')}</p>
+              <span class="inline-block mt-2 text-sm md:text-base text-gray-500 bg-gray-100 px-3 py-1 rounded-full">${product.category || 'Uncategorized'}</span>
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+
+    } catch (error) {
+      console.error('Error:', error);
+      container.innerHTML = `
+        <p class="text-center text-red-500 py-8">Failed to load products</p>
+      `;
+    }
+  }
+
+  // Handle logout
+  async function handleLogout() {
+    const btn = document.getElementById('logoutBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="animate-pulse">Logging out...</span>';
+    btn.disabled = true;
+
+    try {
+      const response = await fetch("{% url 'main:logout_ajax' %}", {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      });
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        showToast(data.message, 'success');
+        setTimeout(() => {
+          window.location.href = "{% url 'main:login' %}";
+        }, 1000);
+      } else {
+        showToast('Logout failed', 'error');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    } catch (error) {
+      showToast('An error occurred', 'error');
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
+  }
+
+ 
+  document.addEventListener('DOMContentLoaded', function() {
+    loadFeaturedProducts();
+  });
+</script>
+
+<style>
+  @keyframes toast-progress {
+    from { width: 100%; }
+    to { width: 0%; }
+  }
+
+  .toast-progress {
+    animation: toast-progress 4s linear;
+  }
+
+  @keyframes slideInRight {
+    0% {
+      transform: translateX(100%) scale(0.9);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+  }
+  .animate-slideInRight {
+    animation: slideInRight 0.5s ease-out forwards;
+  }
+</style>
 {% endblock %}
