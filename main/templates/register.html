@@ -71,9 +71,7 @@
 
 
 <script>
-  // ==================================================================
-  // == Fungsi showToast yang sudah diperbaiki (BAGIAN YANG DIUBAH) ==
-  // ==================================================================
+ 
   function showToast(message, type = 'success') {
     // 1. Ambil blueprint dari HTML dan buat salinannya (clone)
     const template = document.getElementById('toastTemplate');
@@ -110,7 +108,7 @@
       toast.style.opacity = '1';
     }, 50);
 
-    // Hapus otomatis dengan animasi keluar (logika ini tetap sama)
+    // Hapus otomatis dengan animasi keluar 
     setTimeout(() => {
       toast.style.transform = 'translateX(400px) scale(0.9)';
       toast.style.opacity = '0';
@@ -118,7 +116,7 @@
     }, 4000);
   }
 
-  // Handle register form submission (Tidak ada perubahan di sini)
+  // Handle register form submission
   document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
