@@ -222,7 +222,7 @@ def get_product_ajax(request, id):
 
 
 # =========================
-# Product List XML/JSON (Keep for backward compatibility)
+# Product List XML/JSON 
 # =========================
 def product_list_xml(request):
     products = Product.objects.all()
@@ -347,7 +347,7 @@ def logout_ajax(request):
 
 
 # =========================
-# Old views (not used anymore, but kept for compatibility)
+# KUMPULAN FUNGSI LAMAA
 # =========================
 def register(request):
     form = UserCreationForm()
