@@ -56,7 +56,7 @@
     menu.classList.toggle("hidden");
   });
 
-  // Toast function for navbar
+  
   function showNavToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `transform transition-all duration-500 ease-in-out translate-x-0 opacity-100 max-w-md w-96 bg-white shadow-2xl rounded-2xl pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden animate-slideInRight`;
@@ -90,7 +90,7 @@
     }, 4000);
   }
 
-  // Handle logout from navbar
+ 
   async function handleNavLogout() {
     const btn = document.getElementById('navLogoutBtn');
     const btnMobile = document.getElementById('navLogoutBtnMobile');
@@ -131,7 +131,7 @@
     }
   }
 
-  // Get CSRF token from cookies
+  
   function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
