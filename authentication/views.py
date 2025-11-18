@@ -53,15 +53,7 @@ def register(request):
     password1 = request.POST.get("password1") or ""
     password2 = request.POST.get("password2") or ""
 
-    if not username or not password1 or not password2:
-        return JsonResponse(
-            {
-                "status": False,
-                "message": "Username and both passwords are required.",
-            },
-            status=400,
-        )
-
+    
     if password1 != password2:
         return JsonResponse(
             {
