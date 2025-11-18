@@ -161,3 +161,16 @@ STATICFILES_DIRS = [BASE_DIR / 'static']  # Optional: untuk dev
 # DEFAULT PRIMARY KEY FIELD
 # =========================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Extra apps & middleware for Flutter authentication
+INSTALLED_APPS += ['corsheaders', 'authentication']
+MIDDLEWARE.insert(2, 'corsheaders.middleware.CorsMiddleware')
+ALLOWED_HOSTS += ['*']
+
+# CORS & cookie settings for Flutter integration
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'

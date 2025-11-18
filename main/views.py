@@ -11,6 +11,9 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import json
+from django.contrib.auth.models import User
+from django.utils.html import strip_tags
+import requests
 
 # =========================
 # Home Page
@@ -234,6 +237,14 @@ def product_list_json(request):
     data = serializers.serialize('json', products)
     return HttpResponse(data, content_type='application/json')
 
+def product_list_json_user(request,user_id):
+    user = get_object_or_404(User, id=user_id)
+    products = Product.objects.filter(user=user)
+    data = serializers.serialize('json', products)
+    return HttpResponse(data, content_type='application/json')
+
+
+
 
 # =========================
 # Product Detail XML/JSON by UUID
@@ -347,6 +358,78 @@ def logout_ajax(request):
 
 
 # =========================
+# Create Product from Flutter
+# =========================
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"status": "error", "message": "Invalid JSON body"},
+                status=400,
+            )
+
+        name = strip_tags(data.get("name", ""))
+        description = strip_tags(data.get("description", ""))
+        category = strip_tags(data.get("category", ""))
+        thumbnail = data.get("thumbnail", "")
+        is_featured = data.get("is_featured", False)
+        brand = strip_tags(data.get("brand", ""))
+
+        price_raw = data.get("price", 0)
+        stock_raw = data.get("stock", 0)
+
+        try:
+            price = int(price_raw)
+        except (TypeError, ValueError):
+            price = 0
+
+        try:
+            stock = int(stock_raw)
+        except (TypeError, ValueError):
+            stock = 0
+
+        user = request.user if request.user.is_authenticated else None
+
+        Product.objects.create(
+            user=user,
+            name=name,
+            price=price,
+            description=description,
+            thumbnail=thumbnail,
+            category=category,
+            is_featured=is_featured,
+            stock=stock,
+            brand=brand,
+        )
+
+        return JsonResponse({"status": "success"}, status=200)
+
+    return JsonResponse({"status": "error"}, status=401)
+
+
+# =========================
+# Proxy image endpoint (for Flutter)
+# =========================
+def proxy_image(request):
+    image_url = request.GET.get('url')
+    if not image_url:
+        return HttpResponse('No URL provided', status=400)
+    
+    try:
+        response = requests.get(image_url, timeout=10)
+        response.raise_for_status()
+        return HttpResponse(
+            response.content,
+            content_type=response.headers.get('Content-Type', 'image/jpeg')
+        )
+    except requests.RequestException as e:
+        return HttpResponse(f'Error fetching image: {str(e)}', status=500)
+
+
+# =========================
 # KUMPULAN FUNGSI LAMAA
 # =========================
 def register(request):
@@ -413,3 +496,15 @@ def product_edit(request, id):
     else:
         form = ProductForm(instance=product)
     return render(request, "product_form.html", {"form": form, "is_edit": True})
+
+
+
+
+
+def get_products_by_user_id(request, user_id):
+    # Mengambil semua produk dimana field 'user' memiliki ID sesuai parameter
+    # Jika field di model Product namanya 'author' atau 'owner', ganti 'user__id' jadi 'author__id'
+    products = Product.objects.filter(user__id=user_id)
+    
+    # Mengembalikan data dalam format JSON
+    return HttpResponse(serializers.serialize('json', products), content_type="application/json")
