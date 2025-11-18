@@ -20,6 +20,9 @@ urlpatterns = [
     path("login/", views.login_ajax, name="login"),
     path("api/logout/", views.logout_ajax, name="logout_ajax"),
 
+    # Flutter create product endpoint
+    path("create-flutter/", views.create_product_flutter, name="create_product_flutter"),
+
     # Proxy image for Flutter
     path("proxy-image/", views.proxy_image, name="proxy_image"),
 
@@ -37,4 +40,3 @@ urlpatterns = [
     # Classic auth views
     path("logout/", views.logout_user, name="logout"),
 ]
-

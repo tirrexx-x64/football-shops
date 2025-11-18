@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.models import User
 
 
 @csrf_exempt
@@ -36,3 +37,79 @@ def login(request):
         status=401,
     )
 
+
+@csrf_exempt
+def register(request):
+    if request.method != "POST":
+        return JsonResponse(
+            {
+                "status": False,
+                "message": "Register must use POST.",
+            },
+            status=405,
+        )
+
+    username = (request.POST.get("username") or "").strip()
+    password1 = request.POST.get("password1") or ""
+    password2 = request.POST.get("password2") or ""
+
+    if not username or not password1 or not password2:
+        return JsonResponse(
+            {
+                "status": False,
+                "message": "Username and both passwords are required.",
+            },
+            status=400,
+        )
+
+    if password1 != password2:
+        return JsonResponse(
+            {
+                "status": False,
+                "message": "Passwords do not match.",
+            },
+            status=400,
+        )
+
+    if User.objects.filter(username=username).exists():
+        return JsonResponse(
+            {
+                "status": False,
+                "message": "Username already exists.",
+            },
+            status=400,
+        )
+
+    user = User.objects.create_user(username=username, password=password1)
+
+    return JsonResponse(
+        {
+            "username": user.username,
+            "status": True,
+            "message": "Account created successfully!",
+        },
+        status=201,
+    )
+
+
+@csrf_exempt
+def logout(request):
+    username = request.user.username if request.user.is_authenticated else ""
+    try:
+        auth_logout(request)
+        return JsonResponse(
+            {
+                "username": username,
+                "status": True,
+                "message": "Logged out successfully!",
+            },
+            status=200,
+        )
+    except Exception:
+        return JsonResponse(
+            {
+                "status": False,
+                "message": "Logout failed.",
+            },
+            status=401,
+        )

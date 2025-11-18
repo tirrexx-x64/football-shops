@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import json
 from django.contrib.auth.models import User
+from django.utils.html import strip_tags
 import requests
 
 # =========================
@@ -354,6 +355,59 @@ def logout_ajax(request):
     })
     response.delete_cookie('last_login')
     return response
+
+
+# =========================
+# Create Product from Flutter
+# =========================
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"status": "error", "message": "Invalid JSON body"},
+                status=400,
+            )
+
+        name = strip_tags(data.get("name", ""))
+        description = strip_tags(data.get("description", ""))
+        category = strip_tags(data.get("category", ""))
+        thumbnail = data.get("thumbnail", "")
+        is_featured = data.get("is_featured", False)
+        brand = strip_tags(data.get("brand", ""))
+
+        price_raw = data.get("price", 0)
+        stock_raw = data.get("stock", 0)
+
+        try:
+            price = int(price_raw)
+        except (TypeError, ValueError):
+            price = 0
+
+        try:
+            stock = int(stock_raw)
+        except (TypeError, ValueError):
+            stock = 0
+
+        user = request.user if request.user.is_authenticated else None
+
+        Product.objects.create(
+            user=user,
+            name=name,
+            price=price,
+            description=description,
+            thumbnail=thumbnail,
+            category=category,
+            is_featured=is_featured,
+            stock=stock,
+            brand=brand,
+        )
+
+        return JsonResponse({"status": "success"}, status=200)
+
+    return JsonResponse({"status": "error"}, status=401)
 
 
 # =========================
