@@ -11,6 +11,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import json
+from django.contrib.auth.models import User
 
 # =========================
 # Home Page
@@ -234,6 +235,14 @@ def product_list_json(request):
     data = serializers.serialize('json', products)
     return HttpResponse(data, content_type='application/json')
 
+def product_list_json_user(request,user_id):
+    user = get_object_or_404(User, id=user_id)
+    products = Product.objects.filter(user=user)
+    data = serializers.serialize('json', products)
+    return HttpResponse(data, content_type='application/json')
+
+
+
 
 # =========================
 # Product Detail XML/JSON by UUID
@@ -413,3 +422,6 @@ def product_edit(request, id):
     else:
         form = ProductForm(instance=product)
     return render(request, "product_form.html", {"form": form, "is_edit": True})
+
+
+

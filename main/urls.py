@@ -33,3 +33,9 @@ urlpatterns = [
     path("products/<str:id>/delete/", views.product_delete, name="product_delete"),
     path('logout/', views.logout_user, name='logout'),
 ]
+
+
+#bukin API untuk get product by user, misalkan di access di api/products/user/{id}, 
+# nanti dia bakal ngirim json yg isinya product dari user dengan id tersebut
+
+
