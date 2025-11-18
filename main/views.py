@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import json
 from django.contrib.auth.models import User
+import requests
 
 # =========================
 # Home Page
@@ -356,6 +357,25 @@ def logout_ajax(request):
 
 
 # =========================
+# Proxy image endpoint (for Flutter)
+# =========================
+def proxy_image(request):
+    image_url = request.GET.get('url')
+    if not image_url:
+        return HttpResponse('No URL provided', status=400)
+    
+    try:
+        response = requests.get(image_url, timeout=10)
+        response.raise_for_status()
+        return HttpResponse(
+            response.content,
+            content_type=response.headers.get('Content-Type', 'image/jpeg')
+        )
+    except requests.RequestException as e:
+        return HttpResponse(f'Error fetching image: {str(e)}', status=500)
+
+
+# =========================
 # KUMPULAN FUNGSI LAMAA
 # =========================
 def register(request):
@@ -425,3 +445,12 @@ def product_edit(request, id):
 
 
 
+
+
+def get_products_by_user_id(request, user_id):
+    # Mengambil semua produk dimana field 'user' memiliki ID sesuai parameter
+    # Jika field di model Product namanya 'author' atau 'owner', ganti 'user__id' jadi 'author__id'
+    products = Product.objects.filter(user__id=user_id)
+    
+    # Mengembalikan data dalam format JSON
+    return HttpResponse(serializers.serialize('json', products), content_type="application/json")

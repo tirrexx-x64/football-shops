@@ -165,7 +165,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Extra apps & middleware for Flutter authentication
 INSTALLED_APPS += ['corsheaders', 'authentication']
 MIDDLEWARE.insert(2, 'corsheaders.middleware.CorsMiddleware')
-ALLOWED_HOSTS += ['10.0.2.2']
+ALLOWED_HOSTS += ['*']
 
 # CORS & cookie settings for Flutter integration
 CORS_ALLOW_ALL_ORIGINS = True
