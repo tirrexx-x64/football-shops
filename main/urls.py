@@ -14,6 +14,8 @@ urlpatterns = [
     path("products/json/", views.product_list_json, name="product_list_json"),
     path("products/add/", views.product_add, name="product_add"),
     path("create-flutter/", views.create_product_flutter, name="create_product_flutter"),
+    path("edit-flutter/<str:id>/", views.edit_product_flutter, name="edit_product_flutter"),
+    path("delete-flutter/<str:id>/", views.delete_product_flutter, name="delete_product_flutter"),
     path("proxy-image/", views.proxy_image, name="proxy_image"),
 
     # --- Path Dinamis untuk Detail Produk (Generic) ---
