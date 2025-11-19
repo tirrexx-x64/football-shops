@@ -18,6 +18,7 @@ def login(request):
                     "username": user.username,
                     "status": True,
                     "message": "Login successful!",
+                    "id": user.id
                 },
                 status=200,
             )
@@ -38,58 +39,49 @@ def login(request):
     )
 
 
+from django.contrib.auth.models import User
+import json
+
+...
+
 @csrf_exempt
 def register(request):
-    if request.method != "POST":
-        return JsonResponse(
-            {
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data['username']
+        password1 = data['password1']
+        password2 = data['password2']
+
+        # Check if the passwords match
+        if password1 != password2:
+            return JsonResponse({
                 "status": False,
-                "message": "Register must use POST.",
-            },
-            status=405,
-        )
-
-    username = (request.POST.get("username") or "").strip()
-    password1 = request.POST.get("password1") or ""
-    password2 = request.POST.get("password2") or ""
-
-    if not username or not password1 or not password2:
-        return JsonResponse(
-            {
+                "message": "Passwords do not match."
+            }, status=400)
+        
+        # Check if the username is already taken
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({
                 "status": False,
-                "message": "Username and both passwords are required.",
-            },
-            status=400,
-        )
-
-    if password1 != password2:
-        return JsonResponse(
-            {
-                "status": False,
-                "message": "Passwords do not match.",
-            },
-            status=400,
-        )
-
-    if User.objects.filter(username=username).exists():
-        return JsonResponse(
-            {
-                "status": False,
-                "message": "Username already exists.",
-            },
-            status=400,
-        )
-
-    user = User.objects.create_user(username=username, password=password1)
-
-    return JsonResponse(
-        {
+                "message": "Username already exists."
+            }, status=400)
+        
+        # Create the new user
+        user = User.objects.create_user(username=username, password=password1)
+        user.save()
+        
+        return JsonResponse({
             "username": user.username,
-            "status": True,
-            "message": "Account created successfully!",
-        },
-        status=201,
-    )
+            "status": 'success',
+            "message": "User created successfully!"
+        }, status=200)
+    
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Invalid request method."
+        }, status=400)
+
 
 
 @csrf_exempt

@@ -329,7 +329,8 @@ def login_ajax(request):
             response = JsonResponse({
                 'status': 'success',
                 'message': f'Welcome back, {username}!',
-                'username': username
+                'username': username,
+                'id': user.id
             })
             response.set_cookie('last_login', str(timezone.now()))
             return response
@@ -408,6 +409,78 @@ def create_product_flutter(request):
         return JsonResponse({"status": "success"}, status=200)
 
     return JsonResponse({"status": "error"}, status=401)
+
+
+# =========================
+# Edit Product from Flutter
+# =========================
+@csrf_exempt
+def edit_product_flutter(request, id):
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return JsonResponse({"status": "error", "message": "Authentication required"}, status=401)
+
+        try:
+            product = get_object_or_404(Product, id=id)
+            if product.user != request.user:
+                return JsonResponse({"status": "error", "message": "You do not own this product"}, status=403)
+
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"status": "error", "message": "Invalid JSON body"}, status=400)
+
+        name = strip_tags(data.get("name", product.name))
+        description = strip_tags(data.get("description", product.description))
+        category = strip_tags(data.get("category", product.category))
+        thumbnail = data.get("thumbnail", product.thumbnail)
+        is_featured = data.get("is_featured", product.is_featured)
+        brand = strip_tags(data.get("brand", product.brand))
+
+        price_raw = data.get("price", product.price)
+        stock_raw = data.get("stock", product.stock)
+
+        try:
+            price = int(price_raw)
+        except (TypeError, ValueError):
+            price = product.price
+
+        try:
+            stock = int(stock_raw)
+        except (TypeError, ValueError):
+            stock = product.stock
+
+        product.name = name
+        product.price = price
+        product.description = description
+        product.thumbnail = thumbnail
+        product.category = category
+        product.is_featured = is_featured
+        product.stock = stock
+        product.brand = brand
+        product.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+
+    return JsonResponse({"status": "error"}, status=405)
+
+
+# =========================
+# Delete Product from Flutter
+# =========================
+@csrf_exempt
+def delete_product_flutter(request, id):
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return JsonResponse({"status": "error", "message": "Authentication required"}, status=401)
+
+        product = get_object_or_404(Product, id=id)
+        if product.user != request.user:
+            return JsonResponse({"status": "error", "message": "You do not own this product"}, status=403)
+
+        product.delete()
+        return JsonResponse({"status": "success"}, status=200)
+
+    return JsonResponse({"status": "error"}, status=405)
 
 
 # =========================
