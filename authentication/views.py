@@ -18,6 +18,7 @@ def login(request):
                     "username": user.username,
                     "status": True,
                     "message": "Login successful!",
+                    "id": user.id
                 },
                 status=200,
             )
